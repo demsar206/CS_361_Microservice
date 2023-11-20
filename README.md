@@ -20,4 +20,5 @@ Encryptor Service handles message encryption and decryption between the client a
 
 Here is a UNL sequence diagram:
 
-![img.png](img.png)
+![image](https://github.com/demsar206/CS_361_Microservice/assets/114278599/df2ff29f-3eb2-4109-9656-905c3e57e2d0)
+
