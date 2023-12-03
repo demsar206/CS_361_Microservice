@@ -3,6 +3,7 @@ import socket
 import threading
 from cryptography.fernet import Fernet
 import json
+import random
 
 
 def handle_client(partner_socket):
@@ -60,20 +61,47 @@ def decrypt_text():
 
 # Gets text from partner's microservice
 def get_text():
+    cities = [
+        {'city': 'Cleveland', 'state': 'Ohio'},
+        {'city': 'New York City', 'state': 'New York'},
+        {'city': 'Los Angeles', 'state': 'California'},
+        {'city': 'Chicago', 'state': 'Illinois'},
+        {'city': 'Houston', 'state': 'Texas'},
+        {'city': 'Philadelphia', 'state': 'Pennsylvania'},
+        {'city': 'Phoenix', 'state': 'Arizona'},
+        {'city': 'San Antonio', 'state': 'Texas'},
+        {'city': 'San Diego', 'state': 'California'},
+        {'city': 'Dallas', 'state': 'Texas'},
+        {'city': 'San Jose', 'state': 'California'},
+        {'city': 'Austin', 'state': 'Texas'},
+        {'city': 'Jacksonville', 'state': 'Florida'},
+        {'city': 'San Francisco', 'state': 'California'},
+        {'city': 'Indianapolis', 'state': 'Indiana'},
+        {'city': 'Seattle', 'state': 'Washington'},
+        {'city': 'Denver', 'state': 'Colorado'},
+        {'city': 'Washington', 'state': 'D.C.'},
+        {'city': 'Boston', 'state': 'Massachusetts'},
+        {'city': 'Nashville', 'state': 'Tennessee'},
+        {'city': 'Baltimore', 'state': 'Maryland'},
+    ]
+
+    random_city_state = random.choice(cities)
+
     try:
         user_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        user_socket.connect(('localhost', 54654))
+        user_socket.connect(('localhost', 55750))
 
         request = {
             'request-type': 'current-conditions',
-            'city': 'Cleveland',
-            'state': 'Ohio'
+            'city': random_city_state['city'],
+            'state': random_city_state['state']
         }
 
-        json_request = json.dumps(request)
-        user_socket.send(json_request.encode())
 
-        response = user_socket.recv(1024).decode()
+        json_request = json.dumps(request)
+        user_socket.send(json_request.encode('utf-8'))
+
+        response = user_socket.recv(1024).decode('utf-8')
         response_python = json.loads(response)
 
         my_text.insert(END, response_python)
